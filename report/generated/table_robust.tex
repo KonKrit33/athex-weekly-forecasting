@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering\small
+\caption{Robustness checks on the test set: MAPE (\%) per stock and under the strict calendar-week protocol (input Monday--Friday, target the following Monday--Friday).}
+\label{tab:robust}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l*{5}{r}}
+\toprule
+Stock & \eng{Persistence} & \eng{RW+drift} & \eng{AR(4)-OLS} & \eng{VRNN-AR} & \eng{Seq2Seq-Attn [close]}$^{\star}$\\
+\midrule
+\#8 & 2.915 & 2.898 & 2.912 & 2.896 & \textbf{2.860} \\
+\#11 & 2.029 & 2.008 & 2.006 & 1.999 & \textbf{1.976} \\
+\#13 & 1.836 & 1.849 & 1.846 & 1.842 & \textbf{1.832} \\
+\#15 & 2.699 & 2.703 & 2.695 & 2.682 & \textbf{2.655} \\
+\#22 & \textbf{1.895} & 1.918 & 1.912 & 1.908 & 1.901 \\
+\midrule
+\makecell[l]{Calendar\\ weeks (330)} & \textbf{2.193} & 2.211 & 2.216 & 2.217 & 2.209 \\
+\quad \eng{Theil} $U$ & — & 1.0005 & 1.0030 & 1.0027 & 0.9994 \\
+\bottomrule
+\end{tabular}
+\end{table}

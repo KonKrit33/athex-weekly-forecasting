@@ -1,0 +1,325 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+% ------------------------------------------------------------------ fonts & language
+\usepackage{fontspec}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{unicode-math}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\setmathfont{Latin Modern Math}
+
+% ------------------------------------------------------------------ layout
+\usepackage[a4paper,margin=2.3cm,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}\setstretch{1.08}
+\usepackage{booktabs,tabularx,multirow,array,makecell}
+\usepackage{graphicx}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}\setlist{itemsep=1pt,topsep=3pt}
+\usepackage[table]{xcolor}
+\usepackage{longtable}
+\usepackage[section]{placeins}
+\setlength{\emergencystretch}{2.5em}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc,decorations.pathreplacing}
+
+\definecolor{ink}{HTML}{0B0B0B}
+\definecolor{ink2}{HTML}{52514E}
+\definecolor{orangeC}{HTML}{EB6834}
+\definecolor{blueC}{HTML}{2A78D6}
+\definecolor{aqua}{HTML}{1BAF7A}
+\colorlet{orange}{orangeC}
+\colorlet{blue}{blueC}
+\definecolor{best}{HTML}{E8F1FB}
+
+\titleformat{\section}{\large\bfseries\sffamily}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily}{\thesubsection}{0.6em}{}
+\titleformat{\paragraph}[runin]{\normalsize\bfseries}{}{}{}[.]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Next-week closing-price forecasting — Athens Stock Exchange}
+\fancyhead[R]{\small\sffamily Technical Report}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\newcommand{\eng}[1]{#1}
+\newcommand{\figdir}{../results/figures}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\yhat}{\hat{y}}
+\input{generated/numbers.tex}
+\input{abstract.tex}
+
+\begin{document}
+
+% ======================================================================== TITLE
+\begin{titlepage}
+\centering
+\includegraphics[width=\linewidth]{figs/header_nkua_dsit.png}\par
+\vspace{1.4cm}
+{\sffamily\large Time Series Analysis and Applications\par}
+\vspace{2pt}
+{\sffamily\small Spring Semester 2026\par}
+\vspace{1.3cm}
+{\sffamily\bfseries\LARGE Forecasting Next-Week Closing Prices\\[3pt] of Athens Stock Exchange Equities\par}
+\vspace{0.5cm}
+{\sffamily\large Attention-based models versus an autoregressive Vanilla RNN baseline\par}
+\vspace{0.9cm}
+{\large Technical Report (TR)\par}
+\vspace{1.1cm}
+{\large\bfseries Konstantinos Kritsotakis\par}
+\vspace{3pt}
+{\normalsize Student ID: 7115152500007\par}
+\vspace{2pt}
+{\normalsize Graduate Student: MSc DSIT -- Specialization: Big Data \& Artificial Intelligence\par}
+\vfill
+\begin{minipage}{0.88\linewidth}
+\small
+\textbf{Abstract.} \abstracttext
+\end{minipage}
+\vspace{0.6cm}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ======================================================================== 1
+\section{Introduction}
+\label{sec:intro}
+
+The assignment asks for the design and implementation of a closing-price predictor that receives \emph{one week} of prices of a stock and forecasts the prices of the \emph{following} week, together with a baseline predictor based on an autoregressive Vanilla RNN. The data are two years of daily prices (13/05/2024--13/05/2026) of 25 anonymised stocks of the Athens Stock Exchange, already split \emph{by stock} into training (17), validation (3) and test (5) sets.
+
+Stock-price forecasting is a notoriously hard problem. Log-prices behave approximately as a random walk with drift, so the forecast that is optimal in the mean-squared-error sense lies very close to the last observed price (efficient-market hypothesis, \cite{fama1970}). A predictor is therefore meaningful only \emph{relative} to the naive (persistence) forecast and only when its advantage is tested statistically. The work follows the ``general approach to time series modelling'' of Lectures 4--5: (i) graphical and statistical exploration; (ii) removal of trend and seasonality to obtain stationary residuals; (iii) modelling of the stationary part; (iv) forecasting and inversion of the transformations.
+
+\paragraph{Contributions}
+\begin{enumerate}[leftmargin=*]
+  \item An exploratory analysis aligned with the course material (ADF, ACF, Ljung--Box, harmonic regression with period $d=5$) that correctly accounts for the cross-sectional dependence between stocks (Section~\ref{sec:data}).
+  \item An invertible representation based on ``anchored'' log-ratios, which removes the local level without leaking any future information (Section~\ref{sec:problem}).
+  \item Three families of neural models matching Lectures 1--3: Vanilla RNN (autoregressive and direct), an encoder--decoder RNN with Bahdanau attention, and an encoder--decoder Transformer with learned ``horizon queries''; plus five classical reference predictors (Section~\ref{sec:models}).
+  \item A strict experimental protocol: hyper-parameters and the final model are selected \emph{only} on the validation set, every model is trained 5 times with different seeds, and the comparison relies on Diebold--Mariano tests and robustness checks (Sections~\ref{sec:exp}--\ref{sec:results}).
+\end{enumerate}
+
+% ======================================================================== 2
+\section{Data and exploratory analysis}
+\label{sec:data}
+
+\subsection{Description}
+Each CSV file contains the columns Date, Close, High, Low, Open and Volume for 495 trading sessions (a common calendar for all stocks). There are no missing values or duplicated dates, and the OHLC prices are consistent ($L_t\le O_t,C_t\le H_t$). The following particularities were found, all of them in training stocks except one:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Recent listings:} stocks \#2, \#6 and \#21 start on 23/09/2024, 02/07/2025 and 04/08/2025 (402, 212 and 189 sessions).
+  \item \textbf{Trading suspension:} stock \#17 misses 17 sessions (09/12/2025--07/01/2026, a gap of 31 calendar days). The \Ndropped{} windows that cross the gap are removed (threshold: a gap $>7$ days; the longest holiday gap is 6 days).
+  \item \textbf{Zero volume:} stock \#24 has 4 sessions with zero volume and a ``frozen'' price (17--23/12/2025) and one missing session; stock \#22 (test) has one zero-volume session. They are kept, because they are genuine exchange records.
+  \item \textbf{Price levels} range from €1.65 to €58.80, so the normalisation must not depend on the price level.
+  \item \textbf{Market regime:} the period is strongly bullish (Fig.~\ref{fig:paths}). The mean daily log-return in the training set is \MuRetPct\% (about \MuRetAnnPct\% per year).
+\end{itemize}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth]{\figdir/eda_paths.pdf}
+  \caption{Cumulative log-change of the closing price of the 25 stocks, by set. The strong stochastic trend, the common market shocks (e.g.\ early August 2024, early April 2025) and the later listings are visible.}
+  \label{fig:paths}
+\end{figure}
+
+\subsection{Stationarity and transformation}
+The Augmented Dickey--Fuller test \cite{dickey1979} (with constant and linear trend) does not reject a unit root in the log-prices of \ADFlevelTrain/17 training stocks (\ADFlevelAll/25 overall, $\alpha=5\%$), whereas it rejects it for the daily log-returns $r_t=\nabla\log C_t$ of \ADFretAll/25 stocks. This is the picture of a random walk with drift, $x_t=\delta+x_{t-1}+w_t$ (TSA notes). \emph{Differencing} makes the series stationary and the \emph{logarithm} stabilises the variance. Since prices move multiplicatively, a 1\% return means the same at €2 and at €50.
+
+\subsection{Autocorrelation}
+The sample ACF of the returns (Fig.~\ref{fig:acf}a) lies almost entirely within the $\pm1.96/\sqrt n$ bands, with a small negative first-order autocorrelation (mean $\hat\rho(1)=\RhoOne$). The Ljung--Box $Q(10)$ test \cite{ljung1978} rejects whiteness for only \LBretTrain/17 training stocks. By contrast, the \emph{squared} returns are strongly autocorrelated (rejection for \LBsqTrain/17), i.e.\ there is volatility clustering. The distribution is heavy-tailed: excess kurtosis \Kurt{}, Jarque--Bera $p<10^{-10}$ (Fig.~\ref{fig:distwd}a). These are the well-known stylised facts of financial returns \cite{cont2001}: the \emph{mean} of future returns is barely predictable from the past, whereas their \emph{variance} is largely predictable.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth]{\figdir/eda_acf.pdf}
+  \caption{Sample ACF of the daily log-returns (a) and of their squares (b) for the 17 training stocks (thin lines) and their mean.}
+  \label{fig:acf}
+\end{figure}
+
+\subsection{Day-of-week seasonality}
+Following Lectures 4--5, we tested for weekly seasonality with a \emph{harmonic regression} of period $d=5$:
+\begin{equation}
+  r_t = a_0 + \sum_{j=1}^{2}\big(a_j\cos(\lambda_j\tau_t)+b_j\sin(\lambda_j\tau_t)\big)+\varepsilon_t,\qquad \lambda_j=\tfrac{2\pi j}{5},
+\end{equation}
+where $\tau_t\in\{0,\dots,4\}$ is the day of the week. We use the actual weekday rather than the session index, because holidays break the periodicity. With $k=2$ harmonics the model is equivalent to 5 weekday dummies. The 17 stocks share the same dates and are strongly correlated through the common market factor. The $F$-test is therefore applied to the cross-sectionally equal-weighted return (one value per date, $n=\NmktDates$); pooling all observations as if they were independent would grossly overstate significance. We obtain $p=\WdP$ ($p=\WdPhc$ with HC3 robust errors), with an apparent ``positive Wednesday'' (Fig.~\ref{fig:distwd}b). However: (a) the effect is driven by a few extreme days and weakens ($p=\WdPtrim$) when the 1\% most extreme days are removed; (b) at the level of individual stocks it is significant for only \WdRejTrain/17; (c) the test stocks cover the \emph{same} period, so a calendar feature could learn events of this particular period rather than a persistent regularity and produce misleadingly optimistic test results. \textbf{We therefore use no calendar features.} This is a conservative choice that prevents a subtle form of leakage.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth]{\figdir/eda_dist_weekday.pdf}
+  \caption{(a) Distribution of the standardised returns on a log scale, compared with $N(0,1)$. (b) Mean and median equal-weighted return per weekday (training set) and the fitted harmonic regression.}
+  \label{fig:distwd}
+\end{figure}
+
+\subsection{Implications for the design}
+\begin{enumerate}[leftmargin=*]
+  \item We model \emph{log-changes} relative to the last price, not price levels (removal of the stochastic trend).
+  \item The reference forecasts are persistence and the random walk with drift. Gains of 1--3\% in MSE are realistic; much larger gains would suggest leakage.
+  \item Because of the heavy tails, both squared (RMSE) and absolute (MAE, MAPE) error measures are reported, together with statistical tests that are robust to autocorrelation and heteroskedasticity.
+\end{enumerate}
+
+% ======================================================================== 3
+\section{Problem formulation}
+\label{sec:problem}
+
+\subsection{Windows}
+A ``week'' is defined as \textbf{5 consecutive trading sessions}. Because of holidays, only 81 of the 105 calendar weeks contain 5 sessions; this definition uses all the data and coincides with the calendar week whenever there is no holiday. For each stock we slide a window of 10 sessions with stride 1: the first 5 closes $C_1,\dots,C_5$ are the input and $C_6,\dots,C_{10}$ the target. This yields \Ntrain{} training, \Nval{} validation and \Ntest{} test windows. The split by stock is given by the assignment, so the task is to generalise to \emph{unseen stocks} of the same period; consequently all models are ``global'' (one model for all stocks). In addition, as a robustness check, we evaluate separately the \NcalTest{} test windows whose input is exactly one Monday--Friday calendar week and whose target is the next one.
+
+\subsection{Invertible transformation}
+All predictors operate in the space of scaled log-ratios with respect to the last known price:
+\begin{equation}
+  y_h=\frac{1}{s}\log\frac{C_{5+h}}{C_5},\quad h=1,\dots,5,
+  \qquad
+  \hat C_{5+h}=C_5\exp\!\big(s\,\yhat_h\big),
+  \label{eq:target}
+\end{equation}
+where $s=\Sret$ is the standard deviation of the daily log-returns of the training set, a scale constant that makes inputs and targets of order one. Anchoring on $C_5$ removes the local level. It uses only information from the input week, and the constants are estimated on the training set only, so there is no leakage from the future or from other sets. The inversion is exact (verified by a unit test). In this space persistence corresponds to $\yhat_h\equiv0$, a property exploited in the design of the networks (Section~\ref{sec:common}).
+
+\subsection{Input features}
+For each day $t=1,\dots,5$ of the input week we consider two feature sets, computed \emph{exclusively} from the input week:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{close} ($F=1$): $z_t=\log(C_t/C_5)/s$.
+  \item \textbf{OHLCV} ($F=5$):
+  \[
+    \Big[z_t,\ \tfrac1s\log\tfrac{O_t}{C_t},\ \tfrac1s\log\tfrac{H_t}{C_t},\ \tfrac1s\log\tfrac{L_t}{C_t},\ \tilde v_t\Big],
+    \qquad \tilde v_t=\frac{\log(1+V_t)-\overline{\log(1+V)}}{s_v},
+  \]
+  where $\tilde v_t$ is the day's volume relative to the weekly average.
+\end{itemize}
+The intraday features encode the trading range and the position of the close within it, which are well-known volatility indicators.
+
+\subsection{Multi-step forecasting strategies}
+For a 5-step horizon there are two main strategies \cite{bentaieb2012}. The \emph{recursive} (autoregressive) strategy uses a one-step model whose forecast is fed back as the next input. The \emph{direct} (multi-output) strategy forecasts all 5 steps at once. The former is the one required for the baseline, but it suffers from error accumulation and \emph{exposure bias}: it is trained with teacher forcing \cite{williams1989}, i.e.\ with true inputs, but at forecast time it is fed with its own estimates \cite{bengio2015}. The proposed models are either direct (Transformer) or seq2seq models trained exactly as they are used.
+
+% ======================================================================== 4
+\section{Models}
+\label{sec:models}
+
+\begin{figure}[tbp]
+  \centering
+  \resizebox{\linewidth}{!}{\input{figs/pipeline.tex}\unskip}
+  \caption{Common pipeline of all predictors: input transformation, model and exact inversion to prices.}
+  \label{fig:pipeline}
+\end{figure}
+
+\subsection{Classical reference predictors}
+All classical predictors are estimated on the training set only and evaluated with the same code as the neural models:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Persistence} (naive random-walk forecast): $\hat C_{5+h}=C_5$.
+  \item \textbf{RW+drift}: $\log\hat C_{5+h}=\log C_5+h\hat\delta$, with $\hat\delta=\MuRetPct\%$ the mean daily return of the training set.
+  \item \textbf{Linear trend (LS)}: a least-squares line fitted to the 5 values $\log C_t$ of the week and extrapolated (Lectures 4--5).
+  \item \textbf{SES}: simple exponential smoothing $\hat m_t=\alpha x_t+(1-\alpha)\hat m_{t-1}$ of $\log C_t$ with the flat forecast $\hat m_5$; $\alpha=\SESalpha$ was chosen by grid search on the training set.
+  \item \textbf{AR(4)-OLS}: a linear autoregression of order 4 on the daily returns, estimated by ordinary least squares (as \texttt{ar.ols} in the solved problems) and iterated recursively. It is the linear counterpart of the baseline; order 4 is the maximum allowed by the 5 prices of the week.
+\end{itemize}
+
+\subsection{Baseline: autoregressive Vanilla RNN (VRNN-AR)}
+Following Lecture 1 \cite{elman1990,goodfellow2016}, the state is updated and the output computed as
+\begin{equation}
+  \mathbf h_t=\tanh(\mathbf U r_t+\mathbf W\mathbf h_{t-1}+\mathbf b),\qquad \hat r_{t+1}=\mathbf V\mathbf h_t+c,
+\end{equation}
+with $\mathbf h_1=\mathbf 0$ and $r_t=\log(C_t/C_{t-1})/s$. The input is univariate, because an autoregressive model must be able to feed its own output back as the next input. Training uses teacher forcing: from each window the inputs are $r_2,\dots,r_9$ and the one-step targets $r_3,\dots,r_{10}$. At forecast time (Fig.~\ref{fig:vrnn}) the network reads the 4 observed returns $r_2..r_5$ of the week and produces $\hat r_6$; then $\hat r_6$ is fed back as input to produce $\hat r_7$, and so on (closed loop). Finally $\yhat_h=\sum_{k\le h}\hat r_{5+k}$. The hyper-parameters (units $\in\{16,32,64\}$, layers $\in\{1,2\}$) are selected on the validation set \emph{according to the closed-loop 5-step forecast error}, not the one-step training error, so that the baseline is optimised for the actual task.
+
+\begin{figure}[tbp]
+  \centering
+  \resizebox{0.95\linewidth}{!}{\input{figs/vrnn_ar.tex}\unskip}
+  \caption{The autoregressive Vanilla RNN unrolled in time at forecast time. The 4 returns of the input week are read (left) and the next 5 are generated in closed loop (right, dashed arrows).}
+  \label{fig:vrnn}
+\end{figure}
+
+\subsection{Encoder--decoder RNN with Bahdanau attention (Seq2Seq-Attn)}
+Following Lecture 2 \cite{bahdanau2015}, the encoder is a bidirectional RNN (GRU \cite{cho2014}). Each day $j$ is represented by the concatenation $\mathbf h_j=[\overrightarrow{\mathbf h}_j;\overleftarrow{\mathbf h}_j]$. The decoder starts from $\mathbf s_0=\tanh(\mathbf W_s\overleftarrow{\mathbf h}_1)$ and for $i=1,\dots,5$ computes
+\begin{align}
+  e_{ij}&=\mathbf v_a^{\top}\tanh(\mathbf W_a\mathbf s_{i-1}+\mathbf U_a\mathbf h_j),\qquad
+  \alpha_{ij}=\frac{\exp e_{ij}}{\sum_{k=1}^{5}\exp e_{ik}},\qquad
+  \mathbf c_i=\sum_{j=1}^{5}\alpha_{ij}\mathbf h_j,\\
+  \mathbf s_i&=f(\mathbf s_{i-1},\yhat_{i-1},\mathbf c_i),\qquad
+  \yhat_i=g(\yhat_{i-1},\mathbf s_i,\mathbf c_i),
+\end{align}
+where $f$ is a GRU cell, $g$ a $\tanh$ hidden layer followed by a linear output, and $\yhat_0=z_5=0$. As stressed in the lecture, $\yhat_{i-1}$ injects autoregression into the decoder. Here the decoder is fed with its \emph{own} previous forecast during training as well (free-running): the whole model remains a single differentiable computational graph and there is no train/test mismatch (no exposure bias). Hyper-parameters: units $\in\{16,32,64\}$, dropout $\in\{0,0.1\}$.
+
+\subsection{Encoder--decoder Transformer with horizon queries}
+Following Lecture 3 \cite{vaswani2017}, each input day is linearly projected to dimension $d$, multiplied by $\sqrt d$, and the sinusoidal positional encoding is added. The encoder consists of $N$ blocks of multi-head self-attention and a feed-forward network (FFN), with residual connections and LayerNorm (post-LN, as in the original paper):
+\begin{equation}
+  \mathrm{Attention}(\mathbf Q,\mathbf K,\mathbf V)=\mathrm{softmax}\!\Big(\frac{\mathbf Q\mathbf K^{\top}}{\sqrt{d_k}}\Big)\mathbf V,\qquad
+  \mathrm{MultiHead}=\mathrm{Concat}(\mathrm{head}_1,\dots,\mathrm{head}_H)\mathbf W^O .
+\end{equation}
+The decoder (Fig.~\ref{fig:transformer}) differs from the autoregressive decoder of the original Transformer in one respect: instead of the previous outputs, it receives 5 \emph{learned query vectors} $\mathbf q_1,\dots,\mathbf q_5\in\R^d$, one per horizon. The idea is borrowed from the object queries of DETR \cite{carion2020} and the ``generative'' decoder of the Informer \cite{zhou2021}. The queries go through self-attention among themselves without a causal mask, since all horizons are produced in parallel, and through encoder--decoder (cross) attention, in which $\mathbf K,\mathbf V$ come from the encoder. A linear head finally produces $\yhat_h$. Hence (i) there is neither error accumulation nor exposure bias, and (ii) each horizon ``decides'' which input days to attend to, with interpretable weights (Section~\ref{sec:analysis}). Hyper-parameters: $d\in\{16,32\}$, $N\in\{1,2\}$, 4 heads, FFN width $2d$, dropout 0.1.
+
+\begin{figure}[tbp]
+  \centering
+  \resizebox{0.9\linewidth}{!}{\input{figs/transformer.tex}\unskip}
+  \caption{The encoder--decoder Transformer with learned horizon queries. The 5 horizons are decoded in parallel (non-autoregressively).}
+  \label{fig:transformer}
+\end{figure}
+
+\subsection{Additional model for the ablation study: VRNN-Direct}
+The same Vanilla RNN cell reads the week and its final state is mapped directly to the 5 horizons. Comparing VRNN-AR with VRNN-Direct isolates the effect of the forecasting \emph{strategy}; comparing VRNN-Direct, Seq2Seq-Attn and the Transformer isolates the effect of the \emph{attention mechanism}. Every direct model is also trained with both feature sets, which isolates the effect of the \emph{features}.
+
+\subsection{Common design choices}
+\label{sec:common}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Zero-initialised head:} in every network the last linear layer is initialised to zero. At the start of training each network is therefore exactly the persistence forecast and moves away from it only as far as the data support. This is a natural inductive bias for near-random walks.
+  \item \textbf{Loss function:} MSE on $y_h$, whose minimiser is the conditional mean of the log-change.
+  \item \textbf{Ensemble:} the final predictor of each family is the average of 5 networks trained with different seeds \cite{lakshminarayanan2017}. This reduces the variance due to initialisation, which matters when the signal is weak.
+\end{itemize}
+
+% ======================================================================== 5
+\section{Experimental protocol}
+\label{sec:exp}
+
+\subsection{Training}
+We use Keras~3 / TensorFlow (CPU), the AdamW optimiser \cite{loshchilov2019} ($\eta=10^{-3}$, weight decay $10^{-4}$, gradient clipping 1.0), batch size 128 and at most 150 epochs. Early stopping monitors the MSE of the \emph{5-step forecast} on the validation set, with a patience of 15 epochs and restoration of the best weights. The criterion is the same for all models and, for VRNN-AR, is computed in closed loop. Determinism is ensured with fixed seeds and \texttt{enable\_op\_determinism}.
+
+\subsection{Selection of hyper-parameters and of the final model}
+Each grid configuration is trained with 2 seeds and the one with the lowest mean validation MSE is selected (Table~\ref{tab:configs}). The selected configurations are then trained with 5 new seeds. \textbf{The proposed model was defined in advance} as the attention-based candidate (Seq2Seq-Attn or Transformer, with close or OHLCV input) with the lowest validation MSE of its ensemble. The test set was used \emph{once}, after the selection.
+
+\input{generated/configs.tex}
+
+\subsection{Metrics}
+With $e=\hat C-C$ we report, per horizon and pooled:
+\begin{itemize}[leftmargin=*]
+  \item MAE and RMSE in €, and $\mathrm{MAPE}=100\cdot\overline{|e|/C}$. Since MAE and RMSE in € are dominated by the expensive stocks, MAPE is the primary metric.
+  \item $\mathrm{RMSE}_{\log}=100\sqrt{\overline{(\log\hat C-\log C)^2}}$, a scale-free error in percentage points, and Theil's $U=\mathrm{RMSE}_{\log}/\mathrm{RMSE}_{\log}^{\text{persistence}}$ \cite{theil1966}; $U<1$ means a better forecast than the naive one.
+  \item DA (directional accuracy): the percentage of windows in which the forecast direction ($\hat C_{5+h}$ versus $C_5$) matches the actual one. It is undefined for persistence.
+\end{itemize}
+
+\subsection{Diebold--Mariano test}
+To compare two predictors $A$ and $B$ we apply the Diebold--Mariano test \cite{diebold1995} with $H_0$: equal expected loss. The loss is the squared log-error, averaged over the 5 horizons or taken per horizon. Two adjustments are needed for our data: (a) the loss differential $d$ is first averaged across stocks for each forecast date, which removes the cross-sectional dependence; (b) the long-run variance of $d_t$ is estimated with a Newey--West kernel \cite{newey1987} with 9 lags, covering the overlap of consecutive 10-day windows (a conservative choice). The Harvey--Leybourne--Newbold small-sample correction \cite{harvey1997} is applied, with a $t_{T-1}$ reference distribution.
+
+% ======================================================================== 6
+\input{results_section.tex}
+
+% ======================================================================== refs
+\begin{thebibliography}{99}\small
+\bibitem{bahdanau2015} D. Bahdanau, K. Cho, Y. Bengio, ``Neural machine translation by jointly learning to align and translate,'' \emph{ICLR}, 2015.
+\bibitem{vaswani2017} A. Vaswani \emph{et al.}, ``Attention is all you need,'' \emph{NIPS}, 2017.
+\bibitem{goodfellow2016} I. Goodfellow, Y. Bengio, A. Courville, \emph{Deep Learning}, MIT Press, 2016, ch.~10.
+\bibitem{elman1990} J. L. Elman, ``Finding structure in time,'' \emph{Cognitive Science}, 14(2):179--211, 1990.
+\bibitem{cho2014} K. Cho \emph{et al.}, ``Learning phrase representations using RNN encoder--decoder for statistical machine translation,'' \emph{EMNLP}, 2014.
+\bibitem{williams1989} R. J. Williams, D. Zipser, ``A learning algorithm for continually running fully recurrent neural networks,'' \emph{Neural Computation}, 1(2):270--280, 1989.
+\bibitem{bengio2015} S. Bengio, O. Vinyals, N. Jaitly, N. Shazeer, ``Scheduled sampling for sequence prediction with recurrent neural networks,'' \emph{NIPS}, 2015.
+\bibitem{bentaieb2012} S. Ben Taieb, G. Bontempi, A. F. Atiya, A. Sorjamaa, ``A review and comparison of strategies for multi-step ahead time series forecasting based on the NN5 forecasting competition,'' \emph{Expert Systems with Applications}, 39(8):7067--7083, 2012.
+\bibitem{carion2020} N. Carion \emph{et al.}, ``End-to-end object detection with transformers,'' \emph{ECCV}, 2020.
+\bibitem{zhou2021} H. Zhou \emph{et al.}, ``Informer: Beyond efficient transformer for long sequence time-series forecasting,'' \emph{AAAI}, 2021.
+\bibitem{zeng2023} A. Zeng, M. Chen, L. Zhang, Q. Xu, ``Are transformers effective for time series forecasting?'' \emph{AAAI}, 2023.
+\bibitem{lakshminarayanan2017} B. Lakshminarayanan, A. Pritzel, C. Blundell, ``Simple and scalable predictive uncertainty estimation using deep ensembles,'' \emph{NIPS}, 2017.
+\bibitem{loshchilov2019} I. Loshchilov, F. Hutter, ``Decoupled weight decay regularization,'' \emph{ICLR}, 2019.
+\bibitem{fama1970} E. F. Fama, ``Efficient capital markets: A review of theory and empirical work,'' \emph{Journal of Finance}, 25(2):383--417, 1970.
+\bibitem{cont2001} R. Cont, ``Empirical properties of asset returns: stylized facts and statistical issues,'' \emph{Quantitative Finance}, 1(2):223--236, 2001.
+\bibitem{dickey1979} D. A. Dickey, W. A. Fuller, ``Distribution of the estimators for autoregressive time series with a unit root,'' \emph{JASA}, 74:427--431, 1979.
+\bibitem{ljung1978} G. M. Ljung, G. E. P. Box, ``On a measure of lack of fit in time series models,'' \emph{Biometrika}, 65(2):297--303, 1978.
+\bibitem{diebold1995} F. X. Diebold, R. S. Mariano, ``Comparing predictive accuracy,'' \emph{Journal of Business \& Economic Statistics}, 13(3):253--263, 1995.
+\bibitem{harvey1997} D. Harvey, S. Leybourne, P. Newbold, ``Testing the equality of prediction mean squared errors,'' \emph{International Journal of Forecasting}, 13(2):281--291, 1997.
+\bibitem{newey1987} W. K. Newey, K. D. West, ``A simple, positive semi-definite, heteroskedasticity and autocorrelation consistent covariance matrix,'' \emph{Econometrica}, 55(3):703--708, 1987.
+\bibitem{theil1966} H. Theil, \emph{Applied Economic Forecasting}, North-Holland, 1966.
+\bibitem{shumway2017} R. H. Shumway, D. S. Stoffer, \emph{Time Series Analysis and Its Applications: With R Examples}, 4th ed., Springer, 2017.
+\bibitem{hyndman2021} R. J. Hyndman, G. Athanasopoulos, \emph{Forecasting: Principles and Practice}, 3rd ed., OTexts, 2021.
+\bibitem{lectures} Course material, \emph{Time Series Analysis and Applications}, MSc DSIT, NKUA, Spring 2026: A. Pikrakis, Lectures 1--3 (\emph{Recurrent Neural Networks; Attention Mechanism; Transformers}); Lectures 4--5 (\emph{Trend and Seasonality}); E. Kofidis, lecture notes and solved problems.
+\end{thebibliography}
+
+\appendix
+\input{appendix.tex}
+
+\end{document}

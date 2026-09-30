@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# LaTeX build files (the compiled report is kept in docs/TR.pdf)
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/*.pdf

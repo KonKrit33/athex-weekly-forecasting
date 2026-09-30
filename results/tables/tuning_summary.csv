@@ -1,0 +1,39 @@
+family,feature_set,config,val_mse,val_mse_sd,best_epoch,n_params,seconds
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 64}",1.83513,0.00461,35.50000,92161,52.75000
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 16}",1.83602,0.00865,39.50000,6145,32.20000
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 32}",1.83655,0.00576,34.00000,23553,31.60000
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 32}",1.83710,0.00320,37.00000,23553,34.25000
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 16}",1.83785,0.01080,39.00000,6145,30.50000
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 64}",1.83787,0.00193,23.00000,92161,37.40000
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 64}",1.85476,0.00354,5.00000,93697,24.75000
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 64}",1.85621,0.00039,4.50000,93697,21.30000
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 16}",1.85876,0.00280,6.00000,6529,14.85000
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 16}",1.86000,0.00273,5.00000,6529,13.95000
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 32}",1.86126,0.00329,3.00000,24321,14.50000
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 32}",1.86189,0.00373,3.00000,24321,15.15000
+transformer,close,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",1.83286,0.00408,54.00000,5697,57.40000
+transformer,close,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",1.84186,0.00060,36.00000,11265,74.15000
+transformer,close,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",1.84253,0.00548,32.50000,21633,45.25000
+transformer,close,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",1.84417,0.00535,32.50000,43009,90.95000
+transformer,ohlcv,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",1.83098,0.00712,33.00000,5761,44.80000
+transformer,ohlcv,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",1.83368,0.02002,36.00000,11329,74.30000
+transformer,ohlcv,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",1.84122,0.01519,27.00000,43137,81.40000
+transformer,ohlcv,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",1.85086,0.01200,24.50000,21761,40.85000
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",1.85812,0.01573,20.50000,3201,15.35000
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",1.86541,0.00097,3.00000,833,7.65000
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",1.86568,0.00548,13.00000,12545,15.05000
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",1.86615,0.00098,4.50000,305,5.80000
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",1.86642,0.00105,3.50000,1121,5.65000
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",1.86824,0.00166,1.50000,4289,5.80000
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",1.84544,0.01395,78.50000,373,20.70000
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",1.84920,0.00085,66.50000,1253,18.80000
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",1.85194,0.00703,41.50000,4549,13.25000
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",1.85215,0.00980,43.50000,901,16.10000
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",1.85492,0.00058,34.50000,3333,14.55000
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",1.86349,0.00817,18.50000,12805,11.00000
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",1.86174,0.00409,3.50000,1381,5.10000
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",1.86342,0.00332,6.00000,437,6.70000
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",1.86417,0.00283,2.50000,4805,4.90000
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",1.86685,0.00086,2.50000,3461,6.35000
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",1.86716,0.00330,3.00000,965,6.65000
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",1.87175,0.00599,2.00000,13061,6.90000

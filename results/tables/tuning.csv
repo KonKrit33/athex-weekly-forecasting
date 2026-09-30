@@ -1,0 +1,77 @@
+family,feature_set,config,seed,val_mse,best_epoch,epochs,seconds,n_params
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",100,1.8654595613479614,5,20,5.8,305
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",101,1.866847276687622,4,19,5.8,305
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",100,1.8660916090011597,4,19,8.0,833
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",101,1.8647242784500122,2,17,7.3,833
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",100,1.865674614906311,4,19,5.7,1121
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",101,1.8671660423278809,3,18,5.6,1121
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",100,1.869241714477539,1,16,8.0,3201
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",101,1.846989631652832,40,55,22.7,3201
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",100,1.8694061040878296,1,16,5.9,4289
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",101,1.8670653104782104,2,17,5.7,4289
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",100,1.8695522546768188,1,16,8.9,12545
+vrnn_ar,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",101,1.8617991209030151,25,40,21.2,12545
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",100,1.8355715055855957,119,134,29.7,373
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",101,1.8553063857587109,38,53,11.7,373
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",100,1.8452224454046604,48,63,17.3,901
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",101,1.8590805214957475,39,54,14.9,901
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",100,1.8498021311197175,75,90,20.4,1253
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",101,1.8485939416306183,58,73,17.2,1253
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",100,1.8553312197800202,31,46,14.0,3333
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",101,1.8545068723749965,38,53,15.1,3333
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",100,1.8569169679751436,27,42,10.2,4549
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",101,1.846970377914979,56,71,16.3,4549
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",100,1.8692666310433537,16,31,10.0,12805
+vrnn_direct,close,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",101,1.8577117249915587,21,36,12.0,12805
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",100,1.8610726043675716,9,24,6.5,437
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 16}",101,1.8657622675838417,3,18,6.9,437
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",100,1.8648260855421737,4,19,7.3,965
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 16}",101,1.8694868349512643,2,17,6.0,965
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",100,1.8588440862563902,6,21,5.9,1381
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 32}",101,1.8646284396821504,1,16,4.3,1381
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",100,1.866242403710446,1,16,6.0,3461
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 32}",101,1.8674519154478393,4,19,6.7,3461
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",100,1.8621633344680453,2,17,4.8,4805
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 1, ""units"": 64}",101,1.8661681991314847,3,18,5.0,4805
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",100,1.8675122886615885,1,16,6.8,13061
+vrnn_direct,ohlcv,"{""dropout"": 0.0, ""layers"": 2, ""units"": 64}",101,1.8759862535497709,3,18,7.0,13061
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 16}",100,1.8454880838210985,30,45,26.1,6145
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 16}",101,1.8302174513824507,48,63,34.9,6145
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 16}",100,1.8421398671397236,35,50,30.8,6145
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 16}",101,1.8298999849844269,44,59,33.6,6145
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 32}",100,1.8406221441510562,35,50,31.1,23553
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 32}",101,1.8324748799094437,33,48,32.1,23553
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 32}",100,1.8393670252071126,39,54,36.0,23553
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 32}",101,1.834836437166732,35,50,32.5,23553
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 64}",100,1.8392402243361898,23,38,38.0,92161
+seq2seq_attn,close,"{""dropout"": 0.0, ""units"": 64}",101,1.83650732189544,23,38,36.8,92161
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 64}",100,1.8318727973095446,43,58,59.1,92161
+seq2seq_attn,close,"{""dropout"": 0.1, ""units"": 64}",101,1.838386871313531,28,43,46.4,92161
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 16}",100,1.8580742755561044,6,21,14.4,6529
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 16}",101,1.8619330785917707,4,19,13.5,6529
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 16}",100,1.8567783324924936,7,22,15.9,6529
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 16}",101,1.8607427956957046,5,20,13.8,6529
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 32}",100,1.8592561302212365,3,18,15.9,24321
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 32}",101,1.8645291295652104,3,18,14.4,24321
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 32}",100,1.8589384016243935,3,18,14.8,24321
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 32}",101,1.8635853829721127,3,18,14.2,24321
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 64}",100,1.856488908781082,3,18,18.3,93697
+seq2seq_attn,ohlcv,"{""dropout"": 0.0, ""units"": 64}",101,1.8559332463844698,6,21,24.3,93697
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 64}",100,1.8572611309609435,3,18,21.7,93697
+seq2seq_attn,ohlcv,"{""dropout"": 0.1, ""units"": 64}",101,1.852257499373917,7,22,27.8,93697
+transformer,close,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",100,1.8357428808463547,43,58,47.5,5697
+transformer,close,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",101,1.8299780524408518,65,80,67.3,5697
+transformer,close,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",100,1.8414315137140935,44,59,83.2,11265
+transformer,close,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",101,1.8422845705928108,28,43,65.1,11265
+transformer,close,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",100,1.84640249768559,34,49,47.9,21633
+transformer,close,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",101,1.8386512651706772,31,46,42.6,21633
+transformer,close,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",100,1.847955240226076,40,55,103.5,43009
+transformer,close,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",101,1.8403946982924961,25,40,78.4,43009
+transformer,ohlcv,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",100,1.8259461496568228,41,56,53.0,5761
+transformer,ohlcv,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",101,1.83601129751972,25,40,36.6,5761
+transformer,ohlcv,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",100,1.8478346725791295,34,49,71.2,11329
+transformer,ohlcv,"{""d_model"": 16, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",101,1.8195173846282937,38,53,77.4,11329
+transformer,ohlcv,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",100,1.8593525593150004,23,38,39.8,21761
+transformer,ohlcv,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 1}",101,1.8423769272289774,26,41,41.9,21761
+transformer,ohlcv,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",100,1.830477059659014,27,42,83.6,43137
+transformer,ohlcv,"{""d_model"": 32, ""dropout"": 0.1, ""ff_mult"": 2, ""heads"": 4, ""layers"": 2}",101,1.8519567079214112,27,42,79.2,43137

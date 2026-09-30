@@ -1,0 +1,23 @@
+\begin{table}[h]
+\centering\small
+\caption{Validation set (3 stocks, \Nval{} windows). The MSE (in the scaled space) is the selection criterion of the proposed model.}
+\label{tab:val}
+\begin{tabular}{lrrr}
+\toprule
+Model & MSE$_{\text{val}}$ & MAPE (\%) & Theil $U$\\
+\midrule
+\eng{Persistence} & 1.9011 & 1.874 & 1.0000 \\
+\eng{RW+drift} & 1.8705 & 1.863 & 0.9919 \\
+\eng{Linear trend (LS)} & 4.0222 & 2.714 & 1.4546 \\
+\eng{SES} & 1.8992 & 1.874 & 0.9995 \\
+\eng{AR(4)-OLS} & 1.8671 & 1.864 & 0.9910 \\
+\eng{VRNN-AR} & 1.8570 & 1.860 & 0.9883 \\
+\eng{VRNN-Direct [close]} & 1.8335 & 1.849 & 0.9821 \\
+\eng{VRNN-Direct [OHLCV]} & 1.8559 & 1.856 & 0.9880 \\
+\rowcolor{best}\eng{Seq2Seq-Attn [close]}$^{\star}$ & 1.8286 & 1.846 & 0.9808 \\
+\eng{Seq2Seq-Attn [OHLCV]} & 1.8295 & 1.843 & 0.9810 \\
+\eng{Transformer [close]} & 1.8337 & 1.845 & 0.9821 \\
+\eng{Transformer [OHLCV]} & 1.8419 & 1.852 & 0.9843 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering\small
+\caption{Selected hyper-parameters per model family and feature set (grid $\times$ 2 seeds; criterion: validation forecast MSE). $d$: model dimension, $N$: number of blocks. ``Epoch'': mean best-validation epoch over the 5 final training runs.}
+\label{tab:configs}
+\begin{tabular}{llllrrr}
+\toprule
+Model & Input & Selected configuration & Params & Configs & MSE$_{\text{val}}$ & Epoch\\
+\midrule
+\eng{VRNN-AR} & \eng{returns} & \eng{layers=2, units=32} & 3,201 & 6 & 1.8581 & 6.0 \\
+\eng{VRNN-Direct} & \eng{close} & \eng{layers=1, units=16} & 373 & 6 & 1.8454 & 86.8 \\
+\eng{VRNN-Direct} & \eng{ohlcv} & \eng{layers=1, units=32} & 1,381 & 6 & 1.8617 & 8.4 \\
+\eng{Seq2Seq-Attn} & \eng{close} & \eng{units=64, dropout=0.1} & 92,161 & 6 & 1.8351 & 29.0 \\
+\eng{Seq2Seq-Attn} & \eng{ohlcv} & \eng{units=64, dropout=0.1} & 93,697 & 6 & 1.8548 & 6.6 \\
+\eng{Transformer} & \eng{close} & \eng{d=16, N=1, heads=4, dropout=0.1} & 5,697 & 4 & 1.8329 & 56.0 \\
+\eng{Transformer} & \eng{ohlcv} & \eng{d=16, N=1, heads=4, dropout=0.1} & 5,761 & 4 & 1.8310 & 21.0 \\
+\bottomrule
+\end{tabular}
+\end{table}

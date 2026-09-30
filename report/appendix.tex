@@ -1,0 +1,40 @@
+\section{Reproducibility and code structure}
+\label{app:code}
+
+The code (\texttt{source.zip}) is written in Python~3.11 with Keras~3 / TensorFlow and runs entirely on CPU. All numerical results and tables of this report are generated automatically from the result files by \texttt{report/make\_report\_assets.py}, so the report and the code cannot diverge.
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+File & Content \\
+\midrule
+\texttt{stockcast/config.py} & problem definition, training protocol, hyper-parameter grids\\
+\texttt{stockcast/data.py} & loading, windowing, transformations (\ref{eq:target}) and their inversion\\
+\texttt{stockcast/baselines.py} & Persistence, RW+drift, LS trend, SES, AR(4)-OLS\\
+\texttt{stockcast/models.py} & VRNN-AR (closed loop), VRNN-Direct, Seq2Seq-Attn, Transformer\\
+\texttt{stockcast/train.py} & training, early stopping on the 5-step forecast error\\
+\texttt{stockcast/metrics.py} & metrics, Diebold--Mariano test (HLN, Newey--West)\\
+\texttt{run\_eda.py} & exploratory analysis (Section~\ref{sec:data})\\
+\texttt{run\_tuning.py} & hyper-parameter selection on the validation set\\
+\texttt{run\_final.py} & final training (5 seeds) and forecasts\\
+\texttt{run\_evaluation.py} & selection of the proposed model, evaluation, figures\\
+\texttt{tests/test\_pipeline.py} & 10 sanity tests (e.g.\ no leakage, exact inversion)\\
+\texttt{run\_all.sh} & reproduces all results with a single command\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The sanity tests (\texttt{python -m pytest}) verify, among other things, that:
+\begin{itemize}[leftmargin=*]
+  \item the inputs of all models do not change when the prices of the target week are altered (no leakage);
+  \item the inverse transformation is exact;
+  \item the stock sets are mutually disjoint;
+  \item the closed loop of VRNN-AR does feed back the previous forecast;
+  \item AR(4)-OLS recovers the coefficients of a known synthetic process;
+  \item the DM test is antisymmetric.
+\end{itemize}
+Re-training a model with the same seed reproduces the stored forecasts exactly.
+
+\section{Supplementary results}
+\input{generated/table_val.tex}
+\input{generated/table_tuning.tex}

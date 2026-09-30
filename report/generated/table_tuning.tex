@@ -1,0 +1,52 @@
+{\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{lllrrr}
+\caption{Full hyper-parameter search results (mean and standard deviation over 2 seeds). Selected configurations are highlighted.}\label{tab:tuning}\\
+\toprule
+Model & Input & Configuration & MSE$_{\text{val}}$ & s.d. & Epoch\\
+\midrule
+\endfirsthead
+\toprule
+Model & Input & Configuration & MSE$_{\text{val}}$ & s.d. & Epoch\\
+\midrule
+\endhead
+\rowcolor{best}\eng{Seq2Seq-Attn} & \eng{close} & \eng{units=64, dropout=0.1} & 1.8351 & 0.0046 & 35.5 \\
+\eng{Seq2Seq-Attn} & \eng{close} & \eng{units=16, dropout=0.1} & 1.8360 & 0.0086 & 39.5 \\
+\eng{Seq2Seq-Attn} & \eng{close} & \eng{units=32, dropout=0.0} & 1.8365 & 0.0058 & 34.0 \\
+\eng{Seq2Seq-Attn} & \eng{close} & \eng{units=32, dropout=0.1} & 1.8371 & 0.0032 & 37.0 \\
+\eng{Seq2Seq-Attn} & \eng{close} & \eng{units=16, dropout=0.0} & 1.8378 & 0.0108 & 39.0 \\
+\eng{Seq2Seq-Attn} & \eng{close} & \eng{units=64, dropout=0.0} & 1.8379 & 0.0019 & 23.0 \\
+\rowcolor{best}\eng{Seq2Seq-Attn} & \eng{ohlcv} & \eng{units=64, dropout=0.1} & 1.8548 & 0.0035 & 5.0 \\
+\eng{Seq2Seq-Attn} & \eng{ohlcv} & \eng{units=64, dropout=0.0} & 1.8562 & 0.0004 & 4.5 \\
+\eng{Seq2Seq-Attn} & \eng{ohlcv} & \eng{units=16, dropout=0.1} & 1.8588 & 0.0028 & 6.0 \\
+\eng{Seq2Seq-Attn} & \eng{ohlcv} & \eng{units=16, dropout=0.0} & 1.8600 & 0.0027 & 5.0 \\
+\eng{Seq2Seq-Attn} & \eng{ohlcv} & \eng{units=32, dropout=0.1} & 1.8613 & 0.0033 & 3.0 \\
+\eng{Seq2Seq-Attn} & \eng{ohlcv} & \eng{units=32, dropout=0.0} & 1.8619 & 0.0037 & 3.0 \\
+\rowcolor{best}\eng{Transformer} & \eng{close} & \eng{d=16, N=1, heads=4, dropout=0.1} & 1.8329 & 0.0041 & 54.0 \\
+\eng{Transformer} & \eng{close} & \eng{d=16, N=2, heads=4, dropout=0.1} & 1.8419 & 0.0006 & 36.0 \\
+\eng{Transformer} & \eng{close} & \eng{d=32, N=1, heads=4, dropout=0.1} & 1.8425 & 0.0055 & 32.5 \\
+\eng{Transformer} & \eng{close} & \eng{d=32, N=2, heads=4, dropout=0.1} & 1.8442 & 0.0053 & 32.5 \\
+\rowcolor{best}\eng{Transformer} & \eng{ohlcv} & \eng{d=16, N=1, heads=4, dropout=0.1} & 1.8310 & 0.0071 & 33.0 \\
+\eng{Transformer} & \eng{ohlcv} & \eng{d=16, N=2, heads=4, dropout=0.1} & 1.8337 & 0.0200 & 36.0 \\
+\eng{Transformer} & \eng{ohlcv} & \eng{d=32, N=2, heads=4, dropout=0.1} & 1.8412 & 0.0152 & 27.0 \\
+\eng{Transformer} & \eng{ohlcv} & \eng{d=32, N=1, heads=4, dropout=0.1} & 1.8509 & 0.0120 & 24.5 \\
+\rowcolor{best}\eng{VRNN-AR} & \eng{close} & \eng{layers=2, units=32} & 1.8581 & 0.0157 & 20.5 \\
+\eng{VRNN-AR} & \eng{close} & \eng{layers=2, units=16} & 1.8654 & 0.0010 & 3.0 \\
+\eng{VRNN-AR} & \eng{close} & \eng{layers=2, units=64} & 1.8657 & 0.0055 & 13.0 \\
+\eng{VRNN-AR} & \eng{close} & \eng{layers=1, units=16} & 1.8661 & 0.0010 & 4.5 \\
+\eng{VRNN-AR} & \eng{close} & \eng{layers=1, units=32} & 1.8664 & 0.0010 & 3.5 \\
+\eng{VRNN-AR} & \eng{close} & \eng{layers=1, units=64} & 1.8682 & 0.0017 & 1.5 \\
+\rowcolor{best}\eng{VRNN-Direct} & \eng{close} & \eng{layers=1, units=16} & 1.8454 & 0.0140 & 78.5 \\
+\eng{VRNN-Direct} & \eng{close} & \eng{layers=1, units=32} & 1.8492 & 0.0008 & 66.5 \\
+\eng{VRNN-Direct} & \eng{close} & \eng{layers=1, units=64} & 1.8519 & 0.0070 & 41.5 \\
+\eng{VRNN-Direct} & \eng{close} & \eng{layers=2, units=16} & 1.8521 & 0.0098 & 43.5 \\
+\eng{VRNN-Direct} & \eng{close} & \eng{layers=2, units=32} & 1.8549 & 0.0006 & 34.5 \\
+\eng{VRNN-Direct} & \eng{close} & \eng{layers=2, units=64} & 1.8635 & 0.0082 & 18.5 \\
+\rowcolor{best}\eng{VRNN-Direct} & \eng{ohlcv} & \eng{layers=1, units=32} & 1.8617 & 0.0041 & 3.5 \\
+\eng{VRNN-Direct} & \eng{ohlcv} & \eng{layers=1, units=16} & 1.8634 & 0.0033 & 6.0 \\
+\eng{VRNN-Direct} & \eng{ohlcv} & \eng{layers=1, units=64} & 1.8642 & 0.0028 & 2.5 \\
+\eng{VRNN-Direct} & \eng{ohlcv} & \eng{layers=2, units=32} & 1.8668 & 0.0009 & 2.5 \\
+\eng{VRNN-Direct} & \eng{ohlcv} & \eng{layers=2, units=16} & 1.8672 & 0.0033 & 3.0 \\
+\eng{VRNN-Direct} & \eng{ohlcv} & \eng{layers=2, units=64} & 1.8718 & 0.0060 & 2.0 \\
+\bottomrule
+\end{longtable}}

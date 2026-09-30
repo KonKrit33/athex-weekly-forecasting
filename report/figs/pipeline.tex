@@ -1,0 +1,14 @@
+\begin{tikzpicture}[
+  font=\small, >={Stealth[length=2.2mm]},
+  box/.style={draw=ink2, rounded corners=2pt, fill=#1, minimum height=11mm, align=center, inner sep=3pt},
+  box/.default=white]
+\node[box=blue!6, text width=27mm] (in) {Input week\\ $C_1,\dots,C_5$\\ \scriptsize(+ $O_t,H_t,L_t,V_t$)};
+\node[box=white, right=6mm of in, text width=41mm] (tr) {\mbox{log \& anchoring}\\ $z_t=\log(C_t/C_5)/s$\\ \scriptsize\mbox{(input-week information only)}};
+\node[box=orange!8, right=6mm of tr, text width=20mm] (m) {Model\\ $f_\theta$};
+\node[box=white, right=6mm of m, text width=24mm] (y) {$\hat y_h$, $h=1..5$\\ \scriptsize\mbox{(scaled}\\ \scriptsize\mbox{log-ratio)}};
+\node[box=aqua!10, right=6mm of y, text width=30mm] (out) {$\hat C_{5+h}=C_5\,e^{s\hat y_h}$\\ \scriptsize(exact inversion)};
+\draw[->, ink2] (in) -- (tr);
+\draw[->, ink2] (tr) -- (m);
+\draw[->, ink2] (m) -- (y);
+\draw[->, ink2] (y) -- (out);
+\end{tikzpicture}

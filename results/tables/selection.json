@@ -1,0 +1,14 @@
+{
+  "candidates_val_mse": {
+    "Seq2Seq-Attn [close]": 1.828625086574535,
+    "Seq2Seq-Attn [OHLCV]": 1.8294564005560163,
+    "Transformer [close]": 1.8336929895176957,
+    "Transformer [OHLCV]": 1.8419259526270804
+  },
+  "proposed": "Seq2Seq-Attn [close]",
+  "proposed_key": "seq2seq_attn|close",
+  "proposed_config": {
+    "dropout": 0.1,
+    "units": 64
+  }
+}

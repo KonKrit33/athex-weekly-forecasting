@@ -1,0 +1,22 @@
+\begin{table}[t]
+\centering\small
+\caption{Test set: MAPE (\%) and Theil's $U$ per forecast horizon $h$ (sessions).}
+\label{tab:horizon}
+\setlength{\tabcolsep}{3.6pt}
+\begin{tabular}{l*{5}{r}|*{5}{r}}
+\toprule
+& \multicolumn{5}{c|}{MAPE (\%)} & \multicolumn{5}{c}{Theil $U$}\\
+Model & $h{=}1$ & 2 & 3 & 4 & 5 & $h{=}1$ & 2 & 3 & 4 & 5\\
+\midrule
+\eng{Persistence} & 1.34 & 1.92 & 2.35 & 2.72 & 3.04 & — & — & — & — & — \\
+\eng{RW+drift} & 1.35 & 1.92 & 2.35 & 2.72 & 3.04 & 0.999 & 0.998 & 0.997 & 0.996 & 0.995 \\
+\eng{AR(4)-OLS} & 1.35 & 1.92 & 2.35 & 2.72 & 3.04 & 0.999 & 0.998 & 0.997 & 0.996 & 0.995 \\
+\eng{VRNN-AR} & 1.34 & 1.91 & 2.34 & 2.71 & 3.03 & 0.991 & 0.992 & 0.992 & 0.993 & 0.992 \\
+\eng{VRNN-Direct [OHLCV]} & 1.34 & 1.90 & 2.33 & 2.71 & 3.03 & 0.991 & 0.990 & 0.990 & 0.991 & 0.991 \\
+\rowcolor{best}\eng{Seq2Seq-Attn [close]}$^{\star}$ & 1.33 & 1.89 & 2.32 & 2.68 & 3.00 & 0.976 & 0.983 & 0.984 & 0.983 & 0.982 \\
+\eng{Seq2Seq-Attn [OHLCV]} & 1.33 & 1.89 & 2.32 & 2.69 & 3.00 & 0.982 & 0.985 & 0.985 & 0.985 & 0.985 \\
+\eng{Transformer [close]} & 1.34 & 1.90 & 2.33 & 2.70 & 3.02 & 0.989 & 0.990 & 0.991 & 0.989 & 0.988 \\
+\eng{Transformer [OHLCV]} & 1.34 & 1.91 & 2.34 & 2.70 & 3.02 & 0.994 & 0.991 & 0.990 & 0.990 & 0.990 \\
+\bottomrule
+\end{tabular}
+\end{table}

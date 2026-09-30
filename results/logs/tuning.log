@@ -1,0 +1,119 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1790147503.354899     950 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1790147505.094536     950 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+vrnn_ar       close  {"dropout": 0.0, "layers": 1, "units": 16}                             seed=100 val_mse=1.8655 epoch=  5 (6s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 1, "units": 16}                             seed=101 val_mse=1.8668 epoch=  4 (6s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 2, "units": 16}                             seed=100 val_mse=1.8661 epoch=  4 (8s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 2, "units": 16}                             seed=101 val_mse=1.8647 epoch=  2 (7s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 1, "units": 32}                             seed=100 val_mse=1.8657 epoch=  4 (6s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 1, "units": 32}                             seed=101 val_mse=1.8672 epoch=  3 (6s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 2, "units": 32}                             seed=100 val_mse=1.8692 epoch=  1 (8s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 2, "units": 32}                             seed=101 val_mse=1.8470 epoch= 40 (23s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 1, "units": 64}                             seed=100 val_mse=1.8694 epoch=  1 (6s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 1, "units": 64}                             seed=101 val_mse=1.8671 epoch=  2 (6s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 2, "units": 64}                             seed=100 val_mse=1.8696 epoch=  1 (9s)
+vrnn_ar       close  {"dropout": 0.0, "layers": 2, "units": 64}                             seed=101 val_mse=1.8618 epoch= 25 (21s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 1, "units": 16}                             seed=100 val_mse=1.8356 epoch=119 (30s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 1, "units": 16}                             seed=101 val_mse=1.8553 epoch= 38 (12s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 2, "units": 16}                             seed=100 val_mse=1.8452 epoch= 48 (17s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 2, "units": 16}                             seed=101 val_mse=1.8591 epoch= 39 (15s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 1, "units": 32}                             seed=100 val_mse=1.8498 epoch= 75 (20s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 1, "units": 32}                             seed=101 val_mse=1.8486 epoch= 58 (17s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 2, "units": 32}                             seed=100 val_mse=1.8553 epoch= 31 (14s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 2, "units": 32}                             seed=101 val_mse=1.8545 epoch= 38 (15s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 1, "units": 64}                             seed=100 val_mse=1.8569 epoch= 27 (10s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 1, "units": 64}                             seed=101 val_mse=1.8470 epoch= 56 (16s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 2, "units": 64}                             seed=100 val_mse=1.8693 epoch= 16 (10s)
+vrnn_direct   close  {"dropout": 0.0, "layers": 2, "units": 64}                             seed=101 val_mse=1.8577 epoch= 21 (12s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 1, "units": 16}                             seed=100 val_mse=1.8611 epoch=  9 (6s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 1, "units": 16}                             seed=101 val_mse=1.8658 epoch=  3 (7s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 2, "units": 16}                             seed=100 val_mse=1.8648 epoch=  4 (7s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 2, "units": 16}                             seed=101 val_mse=1.8695 epoch=  2 (6s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 1, "units": 32}                             seed=100 val_mse=1.8588 epoch=  6 (6s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 1, "units": 32}                             seed=101 val_mse=1.8646 epoch=  1 (4s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 2, "units": 32}                             seed=100 val_mse=1.8662 epoch=  1 (6s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 2, "units": 32}                             seed=101 val_mse=1.8675 epoch=  4 (7s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 1, "units": 64}                             seed=100 val_mse=1.8622 epoch=  2 (5s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 1, "units": 64}                             seed=101 val_mse=1.8662 epoch=  3 (5s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 2, "units": 64}                             seed=100 val_mse=1.8675 epoch=  1 (7s)
+vrnn_direct   ohlcv  {"dropout": 0.0, "layers": 2, "units": 64}                             seed=101 val_mse=1.8760 epoch=  3 (7s)
+seq2seq_attn  close  {"dropout": 0.0, "units": 16}                                          seed=100 val_mse=1.8455 epoch= 30 (26s)
+seq2seq_attn  close  {"dropout": 0.0, "units": 16}                                          seed=101 val_mse=1.8302 epoch= 48 (35s)
+seq2seq_attn  close  {"dropout": 0.1, "units": 16}                                          seed=100 val_mse=1.8421 epoch= 35 (31s)
+seq2seq_attn  close  {"dropout": 0.1, "units": 16}                                          seed=101 val_mse=1.8299 epoch= 44 (34s)
+seq2seq_attn  close  {"dropout": 0.0, "units": 32}                                          seed=100 val_mse=1.8406 epoch= 35 (31s)
+seq2seq_attn  close  {"dropout": 0.0, "units": 32}                                          seed=101 val_mse=1.8325 epoch= 33 (32s)
+seq2seq_attn  close  {"dropout": 0.1, "units": 32}                                          seed=100 val_mse=1.8394 epoch= 39 (36s)
+seq2seq_attn  close  {"dropout": 0.1, "units": 32}                                          seed=101 val_mse=1.8348 epoch= 35 (32s)
+seq2seq_attn  close  {"dropout": 0.0, "units": 64}                                          seed=100 val_mse=1.8392 epoch= 23 (38s)
+seq2seq_attn  close  {"dropout": 0.0, "units": 64}                                          seed=101 val_mse=1.8365 epoch= 23 (37s)
+seq2seq_attn  close  {"dropout": 0.1, "units": 64}                                          seed=100 val_mse=1.8319 epoch= 43 (59s)
+seq2seq_attn  close  {"dropout": 0.1, "units": 64}                                          seed=101 val_mse=1.8384 epoch= 28 (46s)
+seq2seq_attn  ohlcv  {"dropout": 0.0, "units": 16}                                          seed=100 val_mse=1.8581 epoch=  6 (14s)
+seq2seq_attn  ohlcv  {"dropout": 0.0, "units": 16}                                          seed=101 val_mse=1.8619 epoch=  4 (14s)
+seq2seq_attn  ohlcv  {"dropout": 0.1, "units": 16}                                          seed=100 val_mse=1.8568 epoch=  7 (16s)
+seq2seq_attn  ohlcv  {"dropout": 0.1, "units": 16}                                          seed=101 val_mse=1.8607 epoch=  5 (14s)
+seq2seq_attn  ohlcv  {"dropout": 0.0, "units": 32}                                          seed=100 val_mse=1.8593 epoch=  3 (16s)
+seq2seq_attn  ohlcv  {"dropout": 0.0, "units": 32}                                          seed=101 val_mse=1.8645 epoch=  3 (14s)
+seq2seq_attn  ohlcv  {"dropout": 0.1, "units": 32}                                          seed=100 val_mse=1.8589 epoch=  3 (15s)
+seq2seq_attn  ohlcv  {"dropout": 0.1, "units": 32}                                          seed=101 val_mse=1.8636 epoch=  3 (14s)
+seq2seq_attn  ohlcv  {"dropout": 0.0, "units": 64}                                          seed=100 val_mse=1.8565 epoch=  3 (18s)
+seq2seq_attn  ohlcv  {"dropout": 0.0, "units": 64}                                          seed=101 val_mse=1.8559 epoch=  6 (24s)
+seq2seq_attn  ohlcv  {"dropout": 0.1, "units": 64}                                          seed=100 val_mse=1.8573 epoch=  3 (22s)
+seq2seq_attn  ohlcv  {"dropout": 0.1, "units": 64}                                          seed=101 val_mse=1.8523 epoch=  7 (28s)
+transformer   close  {"d_model": 16, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 1} seed=100 val_mse=1.8357 epoch= 43 (48s)
+transformer   close  {"d_model": 16, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 1} seed=101 val_mse=1.8300 epoch= 65 (67s)
+transformer   close  {"d_model": 16, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 2} seed=100 val_mse=1.8414 epoch= 44 (83s)
+transformer   close  {"d_model": 16, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 2} seed=101 val_mse=1.8423 epoch= 28 (65s)
+transformer   close  {"d_model": 32, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 1} seed=100 val_mse=1.8464 epoch= 34 (48s)
+transformer   close  {"d_model": 32, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 1} seed=101 val_mse=1.8387 epoch= 31 (43s)
+transformer   close  {"d_model": 32, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 2} seed=100 val_mse=1.8480 epoch= 40 (104s)
+transformer   close  {"d_model": 32, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 2} seed=101 val_mse=1.8404 epoch= 25 (78s)
+transformer   ohlcv  {"d_model": 16, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 1} seed=100 val_mse=1.8259 epoch= 41 (53s)
+transformer   ohlcv  {"d_model": 16, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 1} seed=101 val_mse=1.8360 epoch= 25 (37s)
+transformer   ohlcv  {"d_model": 16, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 2} seed=100 val_mse=1.8478 epoch= 34 (71s)
+transformer   ohlcv  {"d_model": 16, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 2} seed=101 val_mse=1.8195 epoch= 38 (77s)
+transformer   ohlcv  {"d_model": 32, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 1} seed=100 val_mse=1.8594 epoch= 23 (40s)
+transformer   ohlcv  {"d_model": 32, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 1} seed=101 val_mse=1.8424 epoch= 26 (42s)
+transformer   ohlcv  {"d_model": 32, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 2} seed=100 val_mse=1.8305 epoch= 27 (84s)
+transformer   ohlcv  {"d_model": 32, "dropout": 0.1, "ff_mult": 2, "heads": 4, "layers": 2} seed=101 val_mse=1.8520 epoch= 27 (79s)
+{
+  "seq2seq_attn|close": {
+    "dropout": 0.1,
+    "units": 64
+  },
+  "seq2seq_attn|ohlcv": {
+    "dropout": 0.1,
+    "units": 64
+  },
+  "transformer|close": {
+    "d_model": 16,
+    "dropout": 0.1,
+    "ff_mult": 2,
+    "heads": 4,
+    "layers": 1
+  },
+  "transformer|ohlcv": {
+    "d_model": 16,
+    "dropout": 0.1,
+    "ff_mult": 2,
+    "heads": 4,
+    "layers": 1
+  },
+  "vrnn_ar|close": {
+    "dropout": 0.0,
+    "layers": 2,
+    "units": 32
+  },
+  "vrnn_direct|close": {
+    "dropout": 0.0,
+    "layers": 1,
+    "units": 16
+  },
+  "vrnn_direct|ohlcv": {
+    "dropout": 0.0,
+    "layers": 1,
+    "units": 32
+  }
+}

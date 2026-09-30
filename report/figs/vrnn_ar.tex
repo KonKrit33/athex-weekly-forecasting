@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+  font=\small, >={Stealth[length=2mm]},
+  cell/.style={draw=ink2, rounded corners=2pt, fill=orange!10, minimum width=9mm, minimum height=7mm},
+  obs/.style={font=\small, text=ink},
+  pred/.style={font=\small, text=orangeC}]
+% observed part
+\foreach \i/\lab in {1/2,2/3,3/4,4/5}{
+  \node[cell] (h\i) at (1.35*\i,0) {$h_{\lab}$};
+  \node[obs] (x\i) at (1.35*\i,-1.15) {$r_{\lab}$};
+  \draw[->, ink2] (x\i) -- (h\i);
+}
+% closed-loop part
+\foreach \i/\lab in {5/6,6/7,7/8,8/9}{
+  \node[cell, fill=orange!22] (h\i) at (1.35*\i,0) {$h_{\lab}$};
+}
+\node[pred] (o4) at (1.35*4,1.15) {$\hat r_{6}$};
+\foreach \i/\lab in {5/7,6/8,7/9,8/10}{\node[pred] (o\i) at (1.35*\i,1.15) {$\hat r_{\lab}$};}
+\foreach \i in {4,...,8}{\draw[->, ink2] (h\i) -- (o\i);}
+\foreach \i [evaluate=\i as \j using int(\i+1)] in {1,...,7}{\draw[->, ink2] (h\i) -- (h\j);}
+% feedback arrows
+\foreach \i [evaluate=\i as \j using int(\i+1)] in {4,...,7}{
+  \draw[->, orangeC, dashed, rounded corners=3pt] (o\i.east) -- ++(0.18,0) |- ($(h\j.south)+(0,-0.55)$) -- (h\j.south);
+}
+\draw[decorate, decoration={brace, amplitude=4pt, mirror}, ink2] (0.9,-1.55) -- (5.85,-1.55)
+  node[midway, below=4pt, font=\scriptsize] {observed week (4 returns)};
+\draw[decorate, decoration={brace, amplitude=4pt, mirror}, orangeC] (6.3,-1.55) -- (11.25,-1.55)
+  node[midway, below=4pt, font=\scriptsize] {closed loop: $\hat r_{t}$ is fed back as input};
+\node[font=\scriptsize, ink2, align=left, anchor=west] at (0.75,1.15) {$h_t=\tanh(Ur_t+Wh_{t-1}+b)$\\ $\hat r_{t+1}=Vh_t+c$};
+\end{tikzpicture}

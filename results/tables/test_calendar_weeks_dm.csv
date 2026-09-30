@@ -1,0 +1,5 @@
+model,DM_vs_Persistence,p_vs_Persistence,n_windows,n_weeks
+RW+drift,0.0670,0.9468,330,66
+AR(4)-OLS,0.3189,0.7508,330,66
+VRNN-AR,0.3054,0.7610,330,66
+Seq2Seq-Attn [close],-0.0775,0.9385,330,66

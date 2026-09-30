@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Next-week closing-price forecasting on the Athens Stock Exchange: attention-based models versus an autoregressive Vanilla RNN"
+type: software
+authors:
+  - family-names: Kritsotakis
+    given-names: Konstantinos
+version: 1.0.0
+date-released: 2026-09-30
+license: MIT
+repository-code: "https://github.com/KonKrit33/athex-weekly-forecasting"
+keywords:
+  - time series forecasting
+  - recurrent neural networks
+  - attention mechanism
+  - transformer
+  - stock prices
+  - Diebold-Mariano test

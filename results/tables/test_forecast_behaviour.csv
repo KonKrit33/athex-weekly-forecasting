@@ -1,0 +1,14 @@
+model,mean_pred_5d_pct,sd_pred_5d_pct,corr_pred_actual_5d
+Persistence,0.0000,0.0000,
+RW+drift,0.4487,0.0000,
+Linear trend (LS),0.3819,4.7472,-0.0386
+SES,-0.0044,0.0931,0.0155
+AR(4)-OLS,0.4490,0.1285,0.0137
+VRNN-AR,0.4253,0.1544,0.0927
+VRNN-Direct [close],0.4372,0.3579,0.1319
+VRNN-Direct [OHLCV],0.4319,0.2139,0.1029
+Seq2Seq-Attn [close],0.3893,0.4470,0.1750
+Seq2Seq-Attn [OHLCV],0.4101,0.3646,0.1571
+Transformer [close],0.4193,0.2787,0.1407
+Transformer [OHLCV],0.4170,0.2262,0.1250
+ACTUAL,0.4111,4.0598,1.0000

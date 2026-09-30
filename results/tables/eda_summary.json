@@ -1,0 +1,49 @@
+{
+  "n_train_returns": 7696,
+  "pooled_train_mean_ret": 0.0008973900177536687,
+  "pooled_train_std_ret": 0.01926325812591188,
+  "pooled_train_ex_kurt": 5.6110847493414475,
+  "jarque_bera_p": 0.0,
+  "adf_logprice_nonstationary_train": 16,
+  "adf_returns_stationary_train": 17,
+  "lb_returns_reject_train": 3,
+  "lb_sq_returns_reject_train": 15,
+  "weekday_reject_train": 5,
+  "n_train_stocks": 17,
+  "market_weekday_F": 3.463365915347564,
+  "market_weekday_F_p": 0.008357829671595957,
+  "market_weekday_F_p_hc3": 0.008865935074336072,
+  "market_weekday_F_p_trimmed_1pct": 0.03700556563996864,
+  "n_market_dates": 494,
+  "market_extreme_days_bp": {
+    "2025-04-07": -770.4215946371419,
+    "2026-04-08": 655.0737803923756,
+    "2026-03-03": -633.427668117162,
+    "2024-08-05": -625.5333743168464,
+    "2025-04-08": 606.4173852518286,
+    "2025-04-04": -506.34129300604275
+  },
+  "weekday_median_ret_bp": {
+    "0": 7.475181576003307,
+    "1": 14.845202303158667,
+    "2": 37.14832080061014,
+    "3": 12.180331119880302,
+    "4": 5.643073260944075
+  },
+  "mean_rho1_train": -0.039718809932552,
+  "weekday_mean_ret_bp": {
+    "0": -9.22842635331935,
+    "1": 10.633921160237007,
+    "2": 44.8306365080806,
+    "3": 6.843701647573934,
+    "4": -10.909773500137016
+  },
+  "all_stocks": {
+    "adf_logprice_nonstationary": 23,
+    "adf_returns_stationary": 25,
+    "lb_returns_reject": 5,
+    "lb_sq_returns_reject": 23,
+    "weekday_reject": 6,
+    "n": 25
+  }
+}

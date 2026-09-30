@@ -1,0 +1,131 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Selection of the proposed model (validation set)}
+On the validation set, persistence has an MSE of \ValPersMSE{} in the scaled space. Among the four attention-based candidates, the lowest MSE (\ValPropMSE, $-$\ValPropGain\% relative to persistence) was achieved by \textbf{\PropName}: an encoder--decoder RNN with Bahdanau attention, 64 units, dropout 0.1, and the 5 closing prices as input. The VRNN-AR baseline obtained \ValVrnnMSE{} ($-$\ValVrnnGain\%). All validation figures are listed in Table~\ref{tab:val} of the Appendix. \textbf{\PropName{} is the proposed predictor}; it was selected before any evaluation on the test set.
+
+\subsection{Main results (test set)}
+\input{generated/table_main.tex}
+
+Table~\ref{tab:main} summarises the results on the 5 unseen test stocks.
+\begin{itemize}[leftmargin=*]
+  \item \textbf{The proposed predictor is the best on every error metric.} Its MAPE is \PropMAPE\%, against \PersMAPE\% for persistence and \VrnnMAPE\% for the baseline. Its Theil index is $U=\PropU$, i.e.\ an MSE reduction of \PropGain\% relative to persistence. The reduction is \VrnnGain\% for VRNN-AR and only \DriftGain\% and \ArGain\% for the classical RW+drift and AR(4)-OLS.
+  \item \textbf{The ranking is consistent between validation and test.} \PropName{} is first on both sets, all neural models outperform all classical ones, and the classical models are practically equivalent to persistence. The selection is therefore not a chance result of overfitting the validation set.
+  \item \textbf{The ensemble helps:} the MAPE of the individual seeds of the proposed model is \PropSeedMAPE$\pm$\PropSeedMAPEsd\%, whereas the ensemble reaches \PropMAPE\%. Even the worst single seed is better than every non-neural model.
+  \item \textbf{Linear-trend extrapolation} (LS) is clearly worse than persistence ($U=\TrendU$). This agrees with the slightly negative autocorrelation: short-term ``trends'' do not persist.
+  \item \textbf{Directional accuracy:} all models have a DA of 53--54\%. This is practically equal to the share of upward moves in the period (RW+drift, which always forecasts a rise: \DriftDA\%). The direction of next week's move is \emph{not} predicted materially better than the base rate.
+\end{itemize}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth]{\figdir/res_examples.pdf}
+  \caption{Example forecasts on the 5 test stocks (last 12 non-overlapping weeks). Each coloured segment starts from the last known price $C_5$ and shows the forecast of the next 5 sessions.}
+  \label{fig:examples}
+\end{figure}
+
+\subsection{Per horizon}
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth]{\figdir/res_horizon.pdf}
+  \caption{(a) MAPE per horizon: the error grows roughly as $\sqrt h$, as a random walk implies, and the curves of all models almost coincide. (b) Theil's $U$ reveals the relative differences ($U<1$: better than persistence).}
+  \label{fig:horizon}
+\end{figure}
+\input{generated/table_horizon.tex}
+
+The absolute error is dominated by market volatility. The MAPE of persistence grows from \PersMAPEhOne\% ($h=1$) to \PersMAPEhFive\% ($h=5$), and all models follow the same $\propto\sqrt h$ curve (Fig.~\ref{fig:horizon}a, Table~\ref{tab:horizon}). In relative terms (Fig.~\ref{fig:horizon}b), the proposed model has its largest gain at $h=1$ ($U=\PropUhOne$) and keeps $U\approx0.98$ at every horizon. VRNN-AR starts at $U=\VrnnUhOne$ and stays close to $0.99$. The linear models (RW+drift, AR(4)-OLS) improve slightly with the horizon, because their gain comes almost exclusively from the drift, which accumulates linearly.
+
+\subsection{Statistical significance}
+\input{generated/table_dm.tex}
+
+The Diebold--Mariano tests (Table~\ref{tab:dm}) show that:
+\begin{enumerate}[leftmargin=*]
+  \item \PropName{} is the \textbf{only} model that significantly outperforms persistence at the 5\% level over all horizons jointly ($\mathrm{DM}=\PropDMpers$, $p=\PropPpers$) and at $h=5$ ($p=\PropPpersHFive$). It also significantly outperforms RW+drift ($p=\DriftPprop$). Against AR(4)-OLS ($p=\ArPprop$) and VRNN-AR ($p=\PropPvrnn$) its advantage is marginal, at the 10\% level.
+  \item The VRNN-AR baseline does not differ significantly from persistence over all horizons jointly ($p=\VrnnPpers$). It is, however, better at $h=1$ ($p=\VrnnPpersHOne$) and significantly better than the linear RW+drift ($p=\VrnnPdrift$) and AR(4)-OLS ($p=\VrnnPar$). The non-linearity of the RNN pays off, but its gain is lost at longer horizons of the closed loop (Section~\ref{sec:analysis}).
+  \item The classical RW+drift, SES and AR(4)-OLS are statistically indistinguishable from persistence ($p>0.4$), as expected for a near-random walk.
+\end{enumerate}
+The significance levels are conservative, because the dependence between stocks is removed by averaging per date and 9 HAC lags are used. No multiple-comparison correction was applied: a single comparison was defined in advance (proposed model versus persistence/baseline), and the remaining ones are exploratory.
+
+\subsection{Robustness: per stock and calendar weeks}
+\input{generated/table_robust.tex}
+
+\paragraph{Per stock}
+Table~\ref{tab:robust} shows that the proposed model has a lower MAPE than persistence for \PropBeatsPersStocks/\NtestStocks{} stocks and lower than VRNN-AR for \PropBeatsVrnnStocks/\NtestStocks, so the improvement is not due to a single stock. The only exception is \#22, the only test stock with a \emph{declining} path over the two years ($-21\%$). There persistence wins marginally, which is expected since all trained models have learned a positive drift.
+
+\paragraph{Calendar weeks}
+On the strict subset with a Monday--Friday input and the following Monday--Friday as target (\NcalTest{} windows, \CwWeeks{} weeks), \textbf{no model differs significantly from persistence}: $U=\CwPropU$ ($p=\CwPropP$) for the proposed model and $U=\CwVrnnU$ ($p=\CwVrnnP$) for VRNN-AR. This subset is about $1/7$ of the test set. Given the observed dispersion of the losses, an MSE improvement of 2--4\% cannot be detected with 66 independent weeks. The result confirms that the true predictive margin is small and requires large samples to be measured reliably. We report it explicitly so that the practical importance of the gains is not overstated.
+
+\subsection{Ablation study}
+The pairwise comparisons in Table~\ref{tab:main} answer three questions:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Strategy (recursive versus direct):} with the same Vanilla RNN cell, direct forecasting improves $U$ from \VrnnU{} to \DirCloseU{}. The improvement has the right sign but is not significant ($p=\DirectPvrnn$).
+  \item \textbf{Attention mechanism:} with the same close input, adding Bahdanau attention in an encoder--decoder improves $U$ from \DirCloseU{} (VRNN-Direct) to \SsCloseU. By contrast, the Transformer ($U=\TrCloseU$) does not improve on the simple VRNN-Direct. With only 5 time steps, the Transformer's advantage in long-range dependencies cannot be exploited, whereas the recurrent encoder provides a useful inductive bias for temporal order. This agrees with the literature, where simpler models often compete with Transformers on time series \cite{zeng2023}.
+  \item \textbf{Features (close versus OHLCV):} OHLCV did \emph{not} help any architecture ($U$: \SsOhlcvU{} vs.\ \SsCloseU{} for Seq2Seq-Attn, \TrOhlcvU{} vs.\ \TrCloseU{} for the Transformer, \DirOhlcvU{} vs.\ \DirCloseU{} for VRNN-Direct). The OHLCV models stop much earlier (Table~\ref{tab:configs}), i.e.\ they overfit faster. The intraday features carry mostly \emph{volatility} information, which does not improve the forecast of the \emph{mean} under an MSE loss. The only hint of a benefit is a slightly higher DA (\SsOhlcvDA\%).
+\end{itemize}
+
+\subsection{What the models learned}
+\label{sec:analysis}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth]{\figdir/res_attention.pdf}
+  \caption{Mean attention weights on the test set (5 seeds, all windows): for each horizon $h$ (rows), the attention paid to each day of the input week (columns; $t$ = last day). A uniform distribution corresponds to $0.20$.}
+  \label{fig:attention}
+\end{figure}
+
+\paragraph{Attention weights}
+In the proposed model (Fig.~\ref{fig:attention}a) attention clearly \emph{decays into the past}: the last day receives a weight of \AttLastMin--\AttLastMax, increasing with the horizon, the day before \AttPrev, and the first two days only \AttFirstTwo{} on average. The pattern resembles the exponentially decaying weights $\alpha(1-\alpha)^j$ of exponential smoothing (Lectures 4--5), except that here the weights depend on the input and are learned from the data. In the Transformer (Fig.~\ref{fig:attention}b) attention is almost uniform, with a mild preference for the last day (\AttTrLast{} on average): the model essentially ``summarises'' the week.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth]{\figdir/res_exposure_bias.pdf}
+  \caption{VRNN-AR on the test set. (a) MSE of the daily-return forecast $\hat r_{5+k}$ relative to the zero forecast. In closed loop the RNN is fed with its own forecasts; in the teacher-forcing diagnostic it is fed with the true returns, which are not available in practice. (b) The dispersion of the forecasts shrinks in closed loop.}
+  \label{fig:exposure}
+\end{figure}
+
+\paragraph{Exposure bias of the baseline}
+Fig.~\ref{fig:exposure} explains why the autoregressive RNN loses its advantage after the first step. When it receives the true returns, it keeps, and even slightly improves, its predictive ability at every step (the MSE ratio falls from \EbClOne{} to \EbTfFive). In closed loop the ratio rises from \EbClOne{} ($k=1$) to \EbClFive{} ($k=5$) and the dispersion of the forecasts shrinks. Its own forecasts, much ``smoother'' than the true returns, carry no new information, and the recursion converges to a fixed point close to the drift. This is exactly the exposure-bias phenomenon \cite{bengio2015}. The proposed model avoids it because it is trained in the same (free-running) mode in which it is used.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]{\figdir/res_learning_curves.pdf}\\[4pt]
+  \includegraphics[width=0.46\linewidth]{\figdir/res_pred_vs_actual.pdf}
+  \caption{Top: validation forecast MSE per epoch (5 seeds; dot: best epoch) for (a) the baseline and (b) the proposed model. Bottom: forecast versus realised 5-day return on the test set.}
+  \label{fig:learning}
+\end{figure}
+
+\paragraph{Training dynamics}
+For VRNN-AR the validation error is minimised within the first epochs (best epochs: \VrnnBestEpochs) and then increases (Fig.~\ref{fig:learning}, top): the model quickly learns the drift and then starts fitting noise. The proposed model improves steadily for 26--36 epochs (\PropBestEpochs), with dropout and early stopping limiting overfitting.
+
+\paragraph{Forecast behaviour}
+The mean forecast 5-day return of the proposed model is \PropMeanFive\%, close to the actual mean (\ActualMeanFive\%) and to the drift (\DriftMeanFive\%). However, the standard deviation of its forecasts is only \PropSdFive\%, against \ActualSdFive\% for the actual returns (Fig.~\ref{fig:learning}, bottom). The forecasts are thus about 9 times more ``compressed'' than reality, as expected from a good conditional-mean estimate when the signal is weak. The forecast--realisation correlation is $\rho=\PropCorrFive$, almost twice that of VRNN-AR ($\rho=\VrnnCorrFive$). It corresponds to $R^2\approx3\%$, consistent with the \PropGain\% MSE reduction.
+
+% ======================================================================== 7
+\FloatBarrier
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{Interpretation}
+The results agree with the exploratory analysis. Returns are close to white noise (Ljung--Box), so the mean of next week is barely predictable from the current week, and all models produce forecasts close to the last price (Fig.~\ref{fig:examples}). The question is therefore not whether a model ``predicts the market'', but whether it extracts the small available signal \emph{systematically} and \emph{without overfitting}. The proposed model does so. It is the best on validation and test and at every horizon, it beats persistence for \PropBeatsPersStocks/\NtestStocks{} stocks, and it is the only model with a statistically significant ($\alpha=5\%$) advantage over persistence. The gain (\PropGain\% in MSE) is small in absolute terms but realistic; a much larger gain on such data would indicate leakage.
+
+\paragraph{Why Bahdanau attention and not the Transformer}
+The input week has only 5 points, so the Transformer's main advantage, connecting distant positions at constant cost (Lecture 3), cannot be exploited. The bidirectional recurrent encoder builds temporal order into the architecture, whereas the Transformer has to learn it from the positional encoding. Moreover, the Seq2Seq-Attn decoder is ``mildly'' autoregressive, since $\yhat_{i-1}$ enters $f$ and $g$; because it is trained in free-running mode, it exploits the consistency between horizons without exposure bias.
+
+\paragraph{Limitations}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Same time period in all sets.} The split by stock means that the evaluation measures generalisation to \emph{new stocks}, not to a \emph{new period}. Common market shocks also appear in training; this is why we avoided calendar features (Section~\ref{sec:data}). The positive drift learned by all models is specific to this bullish period and would work against them in a falling market (see stock \#22).
+  \item \textbf{Statistical power.} The \Ntest{} test windows overlap and come from 5 stocks, so the effective sample size is much smaller, as the calendar-week subset showed.
+  \item \textbf{Point forecasts.} The ACF of the squared returns shows that \emph{volatility} is strongly predictable. A probabilistic forecast (e.g.\ quantiles or a full distribution) would have more practical value than a point forecast.
+  \item \textbf{Economic significance.} DA does not materially exceed the base rate of upward moves. Without transaction costs and risk management, the results do not constitute a trading strategy.
+\end{itemize}
+
+\paragraph{Future work}
+(i) Out-of-time (walk-forward) evaluation with newer data. (ii) Probabilistic forecasts with a quantile loss or a volatility model. (iii) Exogenous variables (market index, sector), if allowed by the problem definition. (iv) Robust losses (Huber) for the heavy tails.
+
+% ======================================================================== 8
+\section{Conclusions}
+We designed, implemented and rigorously evaluated a predictor of next-week closing prices for stocks of the Athens Stock Exchange. The predictor is an encoder--decoder RNN with Bahdanau attention whose input is the 5 closing prices of the current week; it was selected on the validation set among four attention-based models. On the 5 unseen test stocks it:
+\begin{itemize}[leftmargin=*]
+  \item achieved a MAPE of \PropMAPE\%, against \VrnnMAPE\% for the required baseline (autoregressive Vanilla RNN) and \PersMAPE\% for the naive forecast;
+  \item reduced the MSE by \PropGain\% relative to the naive forecast, with a statistically significant difference ($p=\PropPpers$), and was better than the baseline at every horizon and for every stock (marginal significance, $p=\PropPvrnn$).
+\end{itemize}
+The analysis showed three things: (a) the recursive strategy of the baseline suffers from exposure bias; (b) attention learns an interpretable pattern of weights decaying into the past, akin to exponential smoothing; (c) the additional OHLCV features increase overfitting without any benefit. The realistic size of the gain, and its absence in smaller subsets, reflect the nature of stock prices as near-random walks.
