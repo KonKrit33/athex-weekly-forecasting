@@ -2,7 +2,7 @@
 
 **Attention-based sequence models versus an autoregressive Vanilla RNN, evaluated against a random-walk benchmark with Diebold–Mariano tests.**
 
-[![tests](https://github.com/USERNAME/athex-weekly-forecasting/actions/workflows/tests.yml/badge.svg)](https://github.com/USERNAME/athex-weekly-forecasting/actions/workflows/tests.yml)
+[![tests](https://github.com/KonKrit33/athex-weekly-forecasting/actions/workflows/tests.yml/badge.svg)](https://github.com/KonKrit33/athex-weekly-forecasting/actions/workflows/tests.yml)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![Keras](https://img.shields.io/badge/Keras%203-TensorFlow-orange)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -100,7 +100,7 @@ input week C1..C5 ──► z_t = log(C_t / C5) / s ──► model ──► ŷ
 ## Quick start
 
 ```bash
-git clone https://github.com/USERNAME/athex-weekly-forecasting.git
+git clone https://github.com/KonKrit33/athex-weekly-forecasting.git
 cd athex-weekly-forecasting
 python -m pip install -r requirements.txt
 
